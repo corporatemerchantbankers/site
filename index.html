@@ -89,11 +89,11 @@
                 <button onclick="router('home')" class="hover:text-brand-gold transition uppercase">Home</button>
                 <button onclick="router('corporate')" class="hover:text-brand-gold transition uppercase">Corporate</button>
                 <button onclick="router('services')" class="hover:text-brand-gold transition uppercase">Services</button>
-                <button onclick="router('investors')" class="hover:text-brand-gold transition uppercase border-b border-brand-gold pb-1">Investor Relations</button>
+                <button onclick="router('investors')" class="hover:text-brand-gold transition uppercase">Investor Relations</button>
             </div>
 
-            <!-- CTA -->
-            <button class="border border-brand-gold text-brand-gold px-6 py-2 text-xs hover:bg-brand-gold hover:text-white transition uppercase tracking-wider">
+            <!-- CTA - Login Button -->
+            <button onclick="router('login')" class="border border-brand-gold text-brand-gold px-6 py-2 text-xs hover:bg-brand-gold hover:text-white transition uppercase tracking-wider">
                 Client Login
             </button>
         </div>
@@ -130,16 +130,15 @@
                 </div>
             </div>
 
-            <!-- Ticker Strip -->
+            <!-- Ticker Strip (Updated for Indian Market) -->
             <div class="bg-white border-b border-gray-200 py-4 overflow-hidden">
                 <div class="ticker-wrap">
                     <div class="ticker-move text-sm font-light text-brand-navy">
-                        <span class="mx-8">S&P 500 <span class="text-green-600">▲ 4,120.50 (+0.8%)</span></span>
-                        <span class="mx-8">NASDAQ <span class="text-green-600">▲ 12,340.10 (+1.2%)</span></span>
-                        <span class="mx-8">FTSE 100 <span class="text-red-500">▼ 7,450.20 (-0.3%)</span></span>
-                        <span class="mx-8">EUR/USD <span class="text-green-600">▲ 1.09 (+0.1%)</span></span>
-                        <span class="mx-8">GOLD <span class="text-brand-gold">▲ 1,980.00 (+0.5%)</span></span>
-                        <span class="mx-8 font-bold">CORP MERCHANT BANKERS (CMB) <span class="text-green-600">▲ 142.85 (+1.24%)</span></span>
+                        <span class="mx-8">SENSEX <span class="text-green-600">▲ 65,420.50 (+0.5%)</span></span>
+                        <span class="mx-8">NIFTY 50 <span class="text-green-600">▲ 19,640.10 (+0.6%)</span></span>
+                        <span class="mx-8">INR/USD <span class="text-red-500">▼ 83.25 (-0.1%)</span></span>
+                        <span class="mx-8">GOLD (MCX) <span class="text-brand-gold">▲ 62,100 (+0.3%)</span></span>
+                        <span class="mx-8 font-bold">CORP MERCHANT BANKERS (CMBANK) <span class="text-green-600">▲ 142.85 (+1.24%)</span></span>
                     </div>
                 </div>
             </div>
@@ -163,8 +162,8 @@
                         <div class="bg-white p-12 text-center shadow-sm hover:shadow-xl transition duration-500 border-t-2 border-transparent hover:border-brand-gold group">
                             <h3 class="text-2xl font-serif text-gray-400 mb-6 group-hover:text-brand-navy transition">Nordic <br/>Power Group</h3>
                             <p class="text-brand-gold text-xs font-bold uppercase tracking-widest mb-2">IPO LEAD BOOKRUNNER</p>
-                            <h4 class="text-3xl text-brand-navy font-light mb-4">€850M</h4>
-                            <p class="text-gray-500 text-sm italic">Initial Public Offering on Euronext</p>
+                            <h4 class="text-3xl text-brand-navy font-light mb-4">₹850 Cr</h4>
+                            <p class="text-gray-500 text-sm italic">Initial Public Offering on NSE</p>
                         </div>
                         <!-- Deal 3 -->
                         <div class="bg-white p-12 text-center shadow-sm hover:shadow-xl transition duration-500 border-t-2 border-transparent hover:border-brand-gold group">
@@ -193,12 +192,13 @@
                         </div>
                         <div class="mt-6 md:mt-0 text-right">
                             <div class="text-4xl font-light flex items-center justify-end">
-                                $142.85 
+                                ₹1,428.50 
                                 <span class="text-green-500 text-lg ml-3 bg-green-900/30 px-2 py-1 rounded">
                                     ▲ 1.24%
                                 </span>
                             </div>
-                            <p class="text-xs text-gray-400 mt-2">NYSE: CMB | Delayed by 15 mins</p>
+                            <!-- Updated Stock Symbol for Indian Market -->
+                            <p class="text-xs text-gray-400 mt-2">NSE: CMBANK | Delayed by 15 mins</p>
                         </div>
                     </div>
                 </div>
@@ -297,6 +297,38 @@
             </div>
         </section>
 
+        <!-- PAGE: LOGIN (New Page) -->
+        <section id="page-login" class="page-section hidden pt-32 pb-20 min-h-screen flex items-center justify-center bg-brand-cream">
+            <div class="bg-white p-10 md:p-12 rounded-xl shadow-2xl max-w-md w-full fade-in border-t-8 border-brand-gold">
+                <h1 class="text-3xl font-serif text-brand-navy mb-4 text-center">Client Login</h1>
+                <p class="text-center text-gray-500 mb-8">Access your investment portfolios and reports.</p>
+
+                <!-- Error Message Box (Hidden by default, shown on form submission) -->
+                <div id="login-message" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-6" role="alert">
+                    <span class="font-medium">Error:</span> Credentials doesn't match. Please try again.
+                </div>
+
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="mb-6">
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">User ID</label>
+                        <input type="text" id="username" name="username" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-gold focus:border-brand-gold transition duration-150" placeholder="Enter your User ID">
+                    </div>
+                    <div class="mb-8">
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="password" name="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-gold focus:border-brand-gold transition duration-150" placeholder="Enter your Password">
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-brand-gold text-white font-bold py-3 rounded-lg hover:bg-brand-navy transition duration-200 uppercase tracking-widest">
+                        Sign In
+                    </button>
+                </form>
+
+                <p class="text-center text-xs text-gray-400 mt-6">
+                    Forgotten password? <a href="#" class="text-brand-gold hover:underline">Reset here.</a>
+                </p>
+            </div>
+        </section>
+
     </div>
 
     <!-- FOOTER -->
@@ -308,7 +340,7 @@
                     <p class="text-gray-400 text-sm leading-relaxed">
                         10 Hudson Yards<br/>
                         New York, NY 10001<br/>
-                        +1 (212) 555-0199
+                        +91 (11) 5555-0199
                     </p>
                 </div>
                 <div>
@@ -341,9 +373,9 @@
             <div class="border-t border-gray-800 pt-8 flex justify-between items-center text-xs text-gray-500">
                 <p>&copy; 2025 Corporate Merchant Bankers. All rights reserved.</p>
                 <div class="flex space-x-4">
-                    <span>NYSE: CMB</span>
-                    <span>SIPC Member</span>
-                    <span>FINRA Member</span>
+                    <span>NSE: CMBANK</span>
+                    <span>SEBI Regulated</span>
+                    <span>BSE Listed</span>
                 </div>
             </div>
         </div>
@@ -397,6 +429,19 @@
             }
         });
 
+        // Handle Login Form Submission - Always fails as requested
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent actual form submission/page reload
+            
+            const messageBox = document.getElementById('login-message');
+            
+            // Per user request, always show the failure message.
+            messageBox.classList.remove('hidden');
+
+            // Optionally, clear the password field after failure
+            document.getElementById('password').value = ''; 
+        }
+
         // Initialize Chart.js for Investors Page
         const ctx = document.getElementById('stockChart').getContext('2d');
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -407,9 +452,10 @@
             type: 'line',
             data: {
                 labels: ['9:30 AM', '10:30 AM', '11:30 AM', '12:30 PM', '1:30 PM', '2:30 PM', '3:30 PM', '4:00 PM'],
+                // Adjusted data scale for ₹ (Rupee) pricing
                 datasets: [{
-                    label: 'Stock Price (USD)',
-                    data: [138.50, 139.20, 140.10, 139.80, 141.50, 141.90, 142.40, 142.85],
+                    label: 'Stock Price (INR)',
+                    data: [1385.00, 1392.00, 1401.00, 1398.00, 1415.00, 1419.00, 1424.00, 1428.50],
                     borderColor: '#0B1E3B',
                     backgroundColor: gradient,
                     borderWidth: 2,
@@ -429,7 +475,7 @@
                     x: { grid: { display: false } },
                     y: { 
                         grid: { borderDash: [5, 5] },
-                        min: 135
+                        min: 1350
                     }
                 }
             }
