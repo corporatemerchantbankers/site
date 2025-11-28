@@ -1,1 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Merchant Bankers | Global Finance</title>
+    
+    <!-- Fonts: Playfair Display (Serif) & Inter (Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (CDN for standalone usage) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for Investor Graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Configuration for Corporate Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0B1E3B',
+                            slate: '#64748B',
+                            gold: '#C5A059',
+                            cream: '#F8F9FA'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-move {
+            display: inline-block;
+            animation: ticker 35s linear infinite; /* Slowed down slightly for readability */
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Hide scrollbar for clean UI */
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #0B1E3B;
+        }
+    </style>
+</head>
+<body class="bg-brand-cream text-brand-navy font-sans antialiased">
+
+    <!-- NAVIGATION -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6 bg-transparent hover:bg-brand-navy hover:shadow-xl group">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-2xl font-serif font-bold tracking-widest text-brand-gold cursor-pointer uppercase" onclick="router('home')">
+                Corporate Merchant Bankers
+            </div>
+
+            <!-- Menu -->
+            <div class="hidden md:flex space-x-8 font-light text-sm tracking-wide text-white group-hover:text-white transition-colors">
+                <button onclick="router('home')" class="hover:text-brand-gold transition uppercase">Home</button>
+                <button onclick="router('corporate')" class="hover:text-brand-gold transition uppercase">Corporate</button>
+                <button onclick="router('services')" class="hover:text-brand-gold transition uppercase">Services</button>
+                <button onclick="router('investors')" class="hover:text-brand-gold transition uppercase border-b border-brand-gold pb-1">Investor Relations</button>
+            </div>
+
+            <!-- CTA -->
+            <button class="border border-brand-gold text-brand-gold px-6 py-2 text-xs hover:bg-brand-gold hover:text-white transition uppercase tracking-wider">
+                Client Login
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTENT CONTAINER -->
+    <div id="app-root">
+        
+        <!-- PAGE: HOME -->
+        <section id="page-home" class="page-section">
+            <!-- Hero -->
+            <div class="relative h-screen flex items-center justify-center bg-brand-navy overflow-hidden">
+                <!-- Background Image -->
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20"></div>
+                <!-- Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent"></div>
+                
+                <div class="relative z-10 text-center px-6 max-w-4xl fade-in">
+                    <p class="text-brand-gold tracking-[0.2em] text-sm uppercase mb-4 font-bold">Global Investment & Merchant Banking</p>
+                    <h1 class="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight">
+                        Architects of <br/> <span class="italic text-brand-slate">Enduring Wealth</span>
+                    </h1>
+                    <p class="text-gray-300 text-lg font-light mb-10 max-w-2xl mx-auto">
+                        Providing strategic counsel and capital solutions to the world’s most influential corporations and institutions since 1892.
+                    </p>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="router('investors')" class="bg-brand-gold text-white px-8 py-4 text-sm tracking-widest hover:bg-white hover:text-brand-navy transition">
+                            INVESTOR RELATIONS
+                        </button>
+                        <button onclick="router('corporate')" class="border border-white text-white px-8 py-4 text-sm tracking-widest hover:bg-white hover:text-brand-navy transition">
+                            OUR FIRM
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticker Strip -->
+            <div class="bg-white border-b border-gray-200 py-4 overflow-hidden">
+                <div class="ticker-wrap">
+                    <div class="ticker-move text-sm font-light text-brand-navy">
+                        <span class="mx-8">S&P 500 <span class="text-green-600">▲ 4,120.50 (+0.8%)</span></span>
+                        <span class="mx-8">NASDAQ <span class="text-green-600">▲ 12,340.10 (+1.2%)</span></span>
+                        <span class="mx-8">FTSE 100 <span class="text-red-500">▼ 7,450.20 (-0.3%)</span></span>
+                        <span class="mx-8">EUR/USD <span class="text-green-600">▲ 1.09 (+0.1%)</span></span>
+                        <span class="mx-8">GOLD <span class="text-brand-gold">▲ 1,980.00 (+0.5%)</span></span>
+                        <span class="mx-8 font-bold">CORP MERCHANT BANKERS (CMB) <span class="text-green-600">▲ 142.85 (+1.24%)</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombstones / Deals -->
+            <div class="py-24 bg-brand-cream">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl font-serif text-brand-navy">Selected Transactions</h2>
+                        <div class="w-16 h-1 bg-brand-gold mx-auto mt-4"></div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- Deal 1 -->
+                        <div class="bg-white p-12 text-center shadow-sm hover:shadow-xl transition duration-500 border-t-2 border-transparent hover:border-brand-gold group">
+                            <h3 class="text-2xl font-serif text-gray-400 mb-6 group-hover:text-brand-navy transition">AeroSpace <br/>Dynamics</h3>
+                            <p class="text-brand-gold text-xs font-bold uppercase tracking-widest mb-2">M&A ADVISORY</p>
+                            <h4 class="text-3xl text-brand-navy font-light mb-4">$4.2B</h4>
+                            <p class="text-gray-500 text-sm italic">Strategic acquisition by DefenseCorp</p>
+                        </div>
+                        <!-- Deal 2 -->
+                        <div class="bg-white p-12 text-center shadow-sm hover:shadow-xl transition duration-500 border-t-2 border-transparent hover:border-brand-gold group">
+                            <h3 class="text-2xl font-serif text-gray-400 mb-6 group-hover:text-brand-navy transition">Nordic <br/>Power Group</h3>
+                            <p class="text-brand-gold text-xs font-bold uppercase tracking-widest mb-2">IPO LEAD BOOKRUNNER</p>
+                            <h4 class="text-3xl text-brand-navy font-light mb-4">€850M</h4>
+                            <p class="text-gray-500 text-sm italic">Initial Public Offering on Euronext</p>
+                        </div>
+                        <!-- Deal 3 -->
+                        <div class="bg-white p-12 text-center shadow-sm hover:shadow-xl transition duration-500 border-t-2 border-transparent hover:border-brand-gold group">
+                            <h3 class="text-2xl font-serif text-gray-400 mb-6 group-hover:text-brand-navy transition">Pacific <br/>Logistics</h3>
+                            <p class="text-brand-gold text-xs font-bold uppercase tracking-widest mb-2">DEBT RESTRUCTURING</p>
+                            <h4 class="text-3xl text-brand-navy font-light mb-4">$1.2B</h4>
+                            <p class="text-gray-500 text-sm italic">Senior Secured Notes issuance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: INVESTORS -->
+        <section id="page-investors" class="page-section hidden pt-24">
+            <!-- Header -->
+            <div class="bg-brand-navy text-white py-20 px-6">
+                <div class="container mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-end">
+                        <div>
+                            <p class="text-brand-gold uppercase tracking-widest text-xs mb-2">Shareholder Center</p>
+                            <h1 class="text-5xl font-serif mb-4">Investor Relations</h1>
+                            <p class="text-gray-400 max-w-xl font-light">
+                                Driving sustainable long-term value through disciplined capital allocation and transparent governance.
+                            </p>
+                        </div>
+                        <div class="mt-6 md:mt-0 text-right">
+                            <div class="text-4xl font-light flex items-center justify-end">
+                                $142.85 
+                                <span class="text-green-500 text-lg ml-3 bg-green-900/30 px-2 py-1 rounded">
+                                    ▲ 1.24%
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-2">NYSE: CMB | Delayed by 15 mins</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="container mx-auto px-6 py-12">
+                <div class="bg-white p-6 shadow-sm border border-gray-200">
+                    <div class="flex justify-between mb-6">
+                        <h3 class="text-xl font-serif text-brand-navy">Stock Performance</h3>
+                        <div class="space-x-2">
+                            <button class="text-xs font-bold text-white bg-brand-navy px-3 py-1">1D</button>
+                            <button class="text-xs font-bold text-gray-500 hover:text-brand-navy px-3 py-1">1M</button>
+                            <button class="text-xs font-bold text-gray-500 hover:text-brand-navy px-3 py-1">1Y</button>
+                        </div>
+                    </div>
+                    <div class="h-64 w-full">
+                        <canvas id="stockChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Docs -->
+            <div class="bg-brand-cream py-20">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl font-serif mb-10 border-l-4 border-brand-gold pl-4 text-brand-navy">Financial Reports</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Doc 1 -->
+                        <div class="bg-white p-8 shadow-sm hover:translate-y-[-5px] transition duration-300 cursor-pointer">
+                            <div class="flex justify-between items-start mb-6">
+                                <i data-lucide="file-text" class="text-brand-slate h-10 w-10"></i>
+                                <span class="bg-brand-navy text-white text-xs px-2 py-1">Q3 2025</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-brand-navy">Earnings Report</h3>
+                            <p class="text-gray-500 text-sm mb-6">Comprehensive analysis of quarterly operational performance.</p>
+                            <button class="flex items-center text-brand-gold text-sm font-bold tracking-wide hover:underline">
+                                DOWNLOAD PDF <i data-lucide="download" class="ml-2 w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <!-- Doc 2 -->
+                        <div class="bg-white p-8 shadow-sm hover:translate-y-[-5px] transition duration-300 cursor-pointer">
+                            <div class="flex justify-between items-start mb-6">
+                                <i data-lucide="pie-chart" class="text-brand-slate h-10 w-10"></i>
+                                <span class="bg-brand-navy text-white text-xs px-2 py-1">FY 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-brand-navy">Annual Report</h3>
+                            <p class="text-gray-500 text-sm mb-6">Yearly review of financials, ESG goals, and strategic outlook.</p>
+                            <button class="flex items-center text-brand-gold text-sm font-bold tracking-wide hover:underline">
+                                DOWNLOAD PDF <i data-lucide="download" class="ml-2 w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <!-- Doc 3 -->
+                        <div class="bg-white p-8 shadow-sm hover:translate-y-[-5px] transition duration-300 cursor-pointer">
+                            <div class="flex justify-between items-start mb-6">
+                                <i data-lucide="presentation" class="text-brand-slate h-10 w-10"></i>
+                                <span class="bg-brand-navy text-white text-xs px-2 py-1">PRESENTATION</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-brand-navy">Investor Deck</h3>
+                            <p class="text-gray-500 text-sm mb-6">Slides from the recent shareholder meeting and conference call.</p>
+                            <button class="flex items-center text-brand-gold text-sm font-bold tracking-wide hover:underline">
+                                DOWNLOAD PDF <i data-lucide="download" class="ml-2 w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: CORPORATE / SERVICES -->
+        <section id="page-corporate" class="page-section hidden pt-24">
+             <div class="container mx-auto px-6 py-20">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-sm font-bold text-brand-gold tracking-widest uppercase mb-2">Our Heritage</h2>
+                        <h1 class="text-5xl font-serif text-brand-navy mb-6">A Legacy of <br/>Trust & Innovation</h1>
+                        <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                            Founded in 1892, Corporate Merchant Bankers has weathered every major financial cycle, emerging stronger each time. We believe that true wealth is not just about capital accumulation, but about the strategic stewardship of resources for future generations.
+                        </p>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Our corporate governance meets the highest global standards, ensuring that our interests align perfectly with those of our clients and shareholders.
+                        </p>
+                    </div>
+                    <div class="bg-gray-200 h-96 relative">
+                        <!-- Placeholder for Executive Image -->
+                         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop')] bg-cover bg-center grayscale hover:grayscale-0 transition duration-700"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Placeholder for Services (reuses corporate structure for demo) -->
+        <section id="page-services" class="page-section hidden pt-24">
+            <div class="bg-brand-navy text-white py-20 px-6 text-center">
+                <h1 class="text-5xl font-serif">Services</h1>
+                <p class="mt-4">Under Construction for Demo</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-navy text-white pt-20 pb-10 border-t border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <div class="text-xl font-serif font-bold tracking-widest text-brand-gold mb-6 uppercase">Corporate Merchant Bankers</div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        10 Hudson Yards<br/>
+                        New York, NY 10001<br/>
+                        +1 (212) 555-0199
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-widest mb-6">Firm</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-gold">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Leadership</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Careers</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Sustainability</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-widest mb-6">Services</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-gold">Investment Banking</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Private Wealth</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Asset Management</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Research</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-widest mb-6">Legal</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-gold">Terms of Use</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-gold">Regulatory Disclosures</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2025 Corporate Merchant Bankers. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <span>NYSE: CMB</span>
+                    <span>SIPC Member</span>
+                    <span>FINRA Member</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Router Function to switch "pages"
+        function router(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('fade-in');
+            });
+            
+            // Show selected page
+            const target = document.getElementById('page-' + pageId);
+            if(target) {
+                target.classList.remove('hidden');
+                target.classList.add('fade-in');
+                window.scrollTo(0,0);
+            }
+
+            // Update Navbar Style based on page
+            const nav = document.getElementById('navbar');
+            if (pageId === 'home') {
+                nav.classList.add('bg-transparent');
+                nav.classList.remove('bg-brand-navy', 'shadow-xl');
+            } else {
+                nav.classList.add('bg-brand-navy', 'shadow-xl');
+                nav.classList.remove('bg-transparent');
+            }
+        }
+
+        // Scroll Effect for Navbar (only on Home)
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            const homeSection = document.getElementById('page-home');
+            
+            if (!homeSection.classList.contains('hidden')) {
+                if (window.scrollY > 50) {
+                    nav.classList.add('bg-brand-navy', 'shadow-xl');
+                    nav.classList.remove('bg-transparent');
+                } else {
+                    nav.classList.remove('bg-brand-navy', 'shadow-xl');
+                    nav.classList.add('bg-transparent');
+                }
+            }
+        });
+
+        // Initialize Chart.js for Investors Page
+        const ctx = document.getElementById('stockChart').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(11, 30, 59, 0.2)');
+        gradient.addColorStop(1, 'rgba(11, 30, 59, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['9:30 AM', '10:30 AM', '11:30 AM', '12:30 PM', '1:30 PM', '2:30 PM', '3:30 PM', '4:00 PM'],
+                datasets: [{
+                    label: 'Stock Price (USD)',
+                    data: [138.50, 139.20, 140.10, 139.80, 141.50, 141.90, 142.40, 142.85],
+                    borderColor: '#0B1E3B',
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { 
+                        grid: { borderDash: [5, 5] },
+                        min: 135
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
